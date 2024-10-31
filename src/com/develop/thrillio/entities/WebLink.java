@@ -1,26 +1,10 @@
 package com.develop.thrillio.entities;
 
-public class WebLink extends Bookmark {
-	private long id;
-	private String title;
+import com.develop.thrillio.partner.Shareable;
+
+public class WebLink extends Bookmark implements Shareable {
 	private String url;
 	private String host;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
 
 	public String getUrl() {
 		return url;
@@ -36,5 +20,30 @@ public class WebLink extends Bookmark {
 
 	public void setHost(String host) {
 		this.host = host;
+	}
+
+	@Override
+	public String toString() {
+		return "WebLink [url=" + url + ", host=" + host + "]";
+	}
+
+	@Override
+	public boolean isKidFriendlyEligible() {
+		if(url.contains("porn") || getTitle().contains("porn") || host.contains("adult")) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String getItemData() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("<item>");
+		builder.append("<type>Weblink</type>");
+		builder.append("<title>").append(getTitle()).append("</title>");
+		builder.append("<url>").append(url).append("</url>");
+		builder.append("<host>").append(host).append("</host>");
+		builder.append("</item>");
+		return builder.toString();
 	}
 }
